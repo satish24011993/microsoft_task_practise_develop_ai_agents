@@ -20,7 +20,6 @@ class TitleAgent:
 
         # Create the title agent
 
-
         return self.agent
         
     async def run_conversation(self, user_message: str) -> list[str]:

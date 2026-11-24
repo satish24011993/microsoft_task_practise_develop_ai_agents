@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
 
+
+
 def _load_events(file_path: str = "data/events.txt") -> list:
     events = []
     with open(file_path) as f:
@@ -110,3 +112,18 @@ COST SUMMARY
         f.write(report)
 
     return json.dumps({"status": "Report generated", "file": filename})
+
+
+# Determine the next visible astronomical event for a given location
+def next_visible_event(location: str) -> str:
+    """Returns the next visible astronomical event for a location."""
+    today = int(datetime.now().strftime("%m%d"))
+    loc = location.lower().replace(" ", "_")
+
+    # Retrieve the next event visible from the location, starting with events later this year
+    for name, event_type, date, date_str, locs in EVENTS:
+        if loc in locs and date >= today:
+            return json.dumps({"event": name, "type": event_type, "date": date_str, "visible_from": sorted(locs)})
+
+    return json.dumps({"message": f"No upcoming events found for {location}."})
+
